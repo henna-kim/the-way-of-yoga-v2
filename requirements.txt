@@ -27,3 +27,15 @@ six>=1.14
 joblib
 memoized-property
 termcolor
+
+# web_scrapping
+requests
+bs4
+BeautifulSoup4
+
+#pose-estimator
+opencv-python
+tensorflow
+numpy
+matplotlib
+mediapipe
