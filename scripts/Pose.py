@@ -1,6 +1,5 @@
 import cv2
 import mediapipe as mp
-import time
 import numpy as np
 from stats import *
 
@@ -22,7 +21,7 @@ class PoseDetector:
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.pose.process(imgRGB)
         if self.results.pose_landmarks and draw:
-            self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS)
+            self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS, landmark_drawing_spec=None)
         return img
 
     def findPosition(self, img, draw=True):
@@ -32,12 +31,12 @@ class PoseDetector:
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 pl_list.append([id, cx, cy])
-                if draw:
+                if draw and id in PRINT_PARTS:
                     cv2.circle(img, (cx, cy), 5, (255, 0, 0), cv2.FILLED)
 
         return pl_list
 
-    def calculate_angle(self, img, positions, A, B, C, correct_angle):
+    def calculate_angle(self, img, positions, A, B, C, correct_angle_min, correct_angle_max, pose):
 
         ### Calculate angles
         a = np.array(positions[A][1:])
@@ -52,16 +51,15 @@ class PoseDetector:
 
         ### Put angle on photo
         angle_text = str(angle)
-        color = GREEN if 0.8 * correct_angle<angle<1.2 * correct_angle else RED
-        cv2.putText(img, angle_text, (b[0] - 30, b[1]), cv2.FONT_HERSHEY_COMPLEX, 0.6, color, 2)
+        color = GREEN if correct_angle_min < angle < correct_angle_max else RED
+        place = (b[0], b[1] + 20) if pose else (b[0], b[1] - 20)
+        cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_TRIPLEX, 0.5, color, 1)
 
         return img
 
     def runDetector(self, path, position, live=False, scale_percent=30):
-
         video = 0 if live else path
         cap = cv2.VideoCapture(video)
-        pTime = 0
 
         while True:
             success, image = cap.read()
@@ -80,10 +78,6 @@ class PoseDetector:
                 print('No pose landmarks found')
                 break
 
-            fps = int(1 / (time.time() - pTime))
-            pTime = time.time()
-            cv2.putText(img, str(fps), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, BLUE, 2)
-
             for angles in position:
                 img = self.calculate_angle(img, positions, *angles)
 
@@ -92,7 +86,6 @@ class PoseDetector:
 
 
 if __name__ == '__main__':
-    detector = PoseDetector()
     path = '../videos/warrior1.mp4'
-    while True:
-        detector.runDetector(path, warrior, scale_percent=50)
+    detector = PoseDetector()
+    detector.runDetector(path, warrior, scale_percent=50)
