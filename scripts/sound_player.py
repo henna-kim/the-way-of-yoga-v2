@@ -20,6 +20,17 @@ class SoundPlayer():
         if not os.path.exists(path):
             print("Path doesn't exist:", self.path)
 
+    def play_positive_sound():
+        positive_file_path = "scripts/mixkit-positive-interface-beep-221.mp3"
+        player = SoundPlayer(positive_file_path)
+        player.play_sound()
+
+
+    def play_negative_sound():
+        negative_file_path = "scripts/mixkit-system-beep-buzzer-fail-2964.mp3"
+        player = SoundPlayer(negative_file_path)
+        player.play_repeated_sound(3)
+
 if __name__ == '__main__':
     path = "/Users/raghda/code/Madniel/the-way-of-yoga/scripts/mixkit-positive-interface-beep-221.mp3"
     detector = SoundPlayer(path)
