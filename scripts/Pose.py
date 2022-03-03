@@ -88,4 +88,4 @@ class PoseDetector:
 if __name__ == '__main__':
     path = '../videos/warrior1.mp4'
     detector = PoseDetector()
-    detector.runDetector(path, warrior, scale_percent=50)
+    detector.runDetector(path, warrior_l, scale_percent=50)
