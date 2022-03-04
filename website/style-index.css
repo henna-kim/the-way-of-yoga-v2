@@ -68,7 +68,7 @@ body {
 
 .navbar {
   background: #e6e4e1;
-  padding: 1rem;
+  padding: 0.1rem;
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
@@ -207,6 +207,14 @@ strong {
   margin-right: auto;
   margin-left: auto;
   max-width: 350px;
-  opacity: 0.4;
+  opacity: 0.5;
   color: white;
+  /* padding-bottom: 70px; */
+}
+
+.fix{
+  position:fixed;
+  bottom: 0%;
+  right:70%;
+  opacity: 0.9;
 }
