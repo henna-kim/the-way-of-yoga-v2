@@ -47,7 +47,9 @@ class PoseDetector:
         BC = c - b
 
         cosine_angle = np.dot(BA, BC) / (np.linalg.norm(BA) * np.linalg.norm(BC))
-        angle = int(np.degrees(np.arccos(cosine_angle)))
+        cosine_angle = cosine_angle if -1 < cosine_angle < 1 else int(cosine_angle)
+        degrees = np.arccos(cosine_angle)
+        angle = int(np.degrees(degrees))
 
         ### Put angle on photo
         angle_text = str(angle)
@@ -86,6 +88,7 @@ class PoseDetector:
 
 
 if __name__ == '__main__':
-    path = '../videos/warrior1.mp4'
-    detector = PoseDetector()
-    detector.runDetector(path, warrior_l, scale_percent=50)
+    position = warrior3_l
+    path = '../videos/warrior3_l.mp4'
+    while True:
+        PoseDetector().runDetector(path, position, scale_percent=50)
