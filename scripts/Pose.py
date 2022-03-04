@@ -9,13 +9,14 @@ class PoseDetector:
     mpPose = mp.solutions.pose
     pose = mpPose.Pose()
 
-    def __int__(self, mode=False, upBody=False, smooth=True,
+    def __int__(self, side, mode=False, upBody=False, smooth=True,
                 detectionCon=0.5, trackCon=0.5):
         self.mode = mode
         self.upBody = upBody
         self.smooth = smooth
         self.detectionCon = detectionCon
         self.trackCon = trackCon
+        self.side = side
 
     def findPose(self, img, draw=True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -24,14 +25,14 @@ class PoseDetector:
             self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS, landmark_drawing_spec=None)
         return img
 
-    def findPosition(self, img, draw=True):
+    def findPosition(self, img, side, draw=True):
         pl_list = []
         if self.results.pose_landmarks:
             for id, lm in enumerate(self.results.pose_landmarks.landmark):
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 pl_list.append([id, cx, cy])
-                if draw and id in PRINT_PARTS:
+                if draw and id in PRINT_PARTS[side]:
                     cv2.circle(img, (cx, cy), 5, (255, 0, 0), cv2.FILLED)
 
         return pl_list
@@ -54,12 +55,12 @@ class PoseDetector:
         ### Put angle on photo
         angle_text = str(angle)
         color = GREEN if correct_angle_min < angle < correct_angle_max else RED
-        place = (b[0], b[1] + 20) if pose else (b[0], b[1] - 20)
-        cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_TRIPLEX, 0.5, color, 1)
+        place = (b[0], b[1] + 10) if pose else (b[0], b[1] - 10)
+        cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_DUPLEX, 0.5, color, 1)
 
         return img
 
-    def runDetector(self, path, position, live=False, scale_percent=30):
+    def runDetector(self, path, side, position, live=False, scale_percent=30):
         video = 0 if live else path
         cap = cv2.VideoCapture(video)
 
@@ -74,7 +75,7 @@ class PoseDetector:
             img = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
 
             img = self.findPose(img)
-            positions = self.findPosition(img)
+            positions = self.findPosition(img, side)
 
             if len(positions) == 0:
                 print('No pose landmarks found')
@@ -88,7 +89,8 @@ class PoseDetector:
 
 
 if __name__ == '__main__':
-    position = warrior3_l
-    path = '../videos/warrior3_l.mp4'
+    position = dance_l
+    path = '../videos/dance_l.mp4'
+    side = path[-5]
     while True:
-        PoseDetector().runDetector(path, position, scale_percent=50)
+        PoseDetector().runDetector(path, side, position, scale_percent=50)
