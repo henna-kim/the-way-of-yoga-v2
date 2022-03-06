@@ -218,3 +218,17 @@ strong {
   right:70%;
   opacity: 0.9;
 }
+
+.webcam-bottom-text {
+  font-family: 'Sen', sans-serif;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-top: 50px;
+}
+
+.webcam-title-text {
+  font-family: 'Sen', sans-serif;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
