@@ -56,10 +56,10 @@ pypi:
 
 
 # project id - replace with your GCP project id
-PROJECT_ID=the-way-of-yoga-2022
+PROJECT_ID=the-way-of-yoga-v2
 
 # bucket name - replace with your GCP bucket name
-BUCKET_NAME='test_bucket_yoga'
+BUCKET_NAME='content-web'
 
 # choose your region from https://cloud.google.com/storage/docs/locations#available_locations
 REGION=europe-west1
@@ -73,7 +73,7 @@ create_bucket:
 
 # path to the file to upload to GCP (the path to the file should be absolute or should match the directory where the make command is ran)
 # replace with your local path to the `train_1k.csv` and make sure to put the path between quotes
-LOCAL_PATH='the-way-of-yoga/data/video/*.mp4'
+LOCAL_PATH='the-way-of-yoga/data/videos/*.mp4'
 
 # bucket directory in which to store the uploaded file (`data` is an arbitrary name that we choose to use)
 BUCKET_FOLDER='data'
