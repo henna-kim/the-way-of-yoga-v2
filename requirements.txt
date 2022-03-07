@@ -39,3 +39,4 @@ tensorflow
 numpy
 matplotlib
 mediapipe
+pillow

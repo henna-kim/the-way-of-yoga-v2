@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from stats import *
-
+from PIL import ImageFont, ImageDraw, Image
 
 class PoseDetector:
     mpDraw = mp.solutions.drawing_utils
@@ -53,10 +53,15 @@ class PoseDetector:
         angle = int(np.degrees(degrees))
 
         ### Put angle on photo
+        fontpath = "./simsun.ttc"  # the font that has this "º" symbol
+        font = ImageFont.truetype(fontpath, 32)
+        draw = ImageDraw.Draw(img)
+
         angle_text = str(angle)
-        color = GREEN if correct_angle_min < angle < correct_angle_max else RED
+        color = BLUE if correct_angle_min < angle < correct_angle_max else RED
         place = (b[0], b[1] + 10) if pose else (b[0], b[1] - 10)
-        cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_DUPLEX, 0.5, color, 1)
+        draw.text(place, angle_text + "º", font=font, fill=color)
+        # cv2.putText(img, angle_text, place, cv2.FONT_ITALIC, 1.0, color, 2)
 
         return img
 
