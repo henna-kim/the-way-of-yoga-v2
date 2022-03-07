@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 from stats import *
 from PIL import ImageFont, ImageDraw, Image
+import pyttsx3
 
 class PoseDetector:
     mpDraw = mp.solutions.drawing_utils
@@ -104,7 +105,9 @@ class PoseDetector:
 
         while True:
             success, image = cap.read()
-            if not success: break
+            if not success:
+                self.run_voice('end')
+                break
 
             # Resize image
             width = int(image.shape[1] * scale_percent / 100)
@@ -125,10 +128,15 @@ class PoseDetector:
             cv2.imshow('Image', img)
             cv2.waitKey(1)
 
+    def run_voice(self, sentance):
+        synthesizer = pyttsx3.init()
+        synthesizer.say(sentance)
+        synthesizer.runAndWait()
+        synthesizer.stop()
 
 if __name__ == '__main__':
-    position = pillow_l
-    path = '../videos/pillow_l.mp4'
+    position = warrior_l
+    path = '../videos/warrior_l.mp4'
     side = path[-5]
     while True:
         PoseDetector().runDetector(path, side, position, scale_percent=50)
