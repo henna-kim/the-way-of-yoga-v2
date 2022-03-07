@@ -25,6 +25,33 @@ class PoseDetector:
             self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS, landmark_drawing_spec=None)
         return img
 
+    def text(self, A, B, C, correct_angle_min, angle):
+        ver = A[0] - C[0]
+        hor = A[1] - C[1]
+
+        if ver > hor:
+            if B[1] > A[1]:
+                # if angle < correct_angle_min:
+                    return '→'
+            else:
+                if angle < correct_angle_min:
+                    return '→'
+                else:
+                    return '←'
+
+        else:
+            if (B[0] < A[0] and angle <= 90) or (B[0] > A[0] and angle > 90):
+                if angle < correct_angle_min:
+                    return '↓'
+                else:
+                    return '↑'
+            else:
+                if angle < correct_angle_min:
+                    return '↑'
+                else:
+                    return '↓'
+
+
     def findPosition(self, img, side, draw=True):
         pl_list = []
         if self.results.pose_landmarks:
@@ -53,16 +80,22 @@ class PoseDetector:
         angle = int(np.degrees(degrees))
 
         ### Put angle on photo
+        if correct_angle_min < angle < correct_angle_max:
+            angle_text = 'OK'
+        else:
+            angle_text = self.text(positions[A], positions[B], positions[C], correct_angle_min, angle)
+
+        color = GREEN if correct_angle_min < angle < correct_angle_max else RED
+        place = (b[0], b[1] + 10) if pose else (b[0], b[1] - 10)
+
         fontpath = "./simsun.ttc"  # the font that has this "º" symbol
         font = ImageFont.truetype(fontpath, 32)
-        draw = ImageDraw.Draw(img)
+        img_pil = Image.fromarray(img)
+        draw = ImageDraw.Draw(img_pil)
+        draw.text(place, angle_text, font=font, fill=color)
 
-        angle_text = str(angle)
-        color = BLUE if correct_angle_min < angle < correct_angle_max else RED
-        place = (b[0], b[1] + 10) if pose else (b[0], b[1] - 10)
-        draw.text(place, angle_text + "º", font=font, fill=color)
-        # cv2.putText(img, angle_text, place, cv2.FONT_ITALIC, 1.0, color, 2)
-
+        # cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        img = np.array(img_pil)
         return img
 
     def runDetector(self, path, side, position, live=False, scale_percent=30):
@@ -94,8 +127,8 @@ class PoseDetector:
 
 
 if __name__ == '__main__':
-    position = dance_l
-    path = '../videos/dance_l.mp4'
+    position = pillow_l
+    path = '../videos/pillow_l.mp4'
     side = path[-5]
     while True:
         PoseDetector().runDetector(path, side, position, scale_percent=50)

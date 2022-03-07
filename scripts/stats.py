@@ -35,7 +35,7 @@ RIGHT_FOOT_INDEX = 32
 ### Colors
 RED = (0, 0, 255)
 GREEN = (0, 255, 0)
-BLUE = (255, 144, 30) #30,144,255
+BLUE = (255, 150, 0)
 
 ### Positions
 warrior_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 120, 180, 1),
