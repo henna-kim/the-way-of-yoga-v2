@@ -81,7 +81,7 @@ body {
   font-size: var(--h3-font-size);
   font-weight: var(--font-weight-bold);
   line-height: normal;
-  padding-top: 0;
+  padding-top: 10%;
 }
 
 .nav-item .nav-link {
@@ -122,13 +122,14 @@ body {
 }
 
 #myVideo {
-  /* position: fixed; */
+  position: cover;
   right: 0;
   bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
+  /* max-width: 100%; */
+  /* max-height: 100%; */
   width: 100%;
-  max-height: 100%;
+  min-height: 100vh;
+  /* max-height: 100%; */
 }
 
 h1,
@@ -206,24 +207,26 @@ strong {
 .hero-text-container {
   margin-right: auto;
   margin-left: auto;
-  max-width: 350px;
-  opacity: 0.5;
+  max-width: 1000px;
+  opacity: 0.7;
   color: white;
   /* padding-bottom: 70px; */
 }
 
 .fix{
   position:fixed;
-  bottom: 0%;
-  right:70%;
-  opacity: 0.9;
+  bottom: -5%;
+  right: 70%;
+  left: 5%;
+  opacity: 3;
 }
 
 .webcam-bottom-text {
   font-family: 'Sen', sans-serif;
   font-weight: 600;
   letter-spacing: 2px;
-  margin-top: 50px;
+  font-size: 25px;
+  margin-top: 40px;
 }
 
 .webcam-title-text {
@@ -231,4 +234,9 @@ strong {
   font-weight: 600;
   letter-spacing: 2px;
   margin-bottom: 20px;
+  margin-top: 50px;
+}
+
+#title-container-text {
+  margin-top: 45px;
 }

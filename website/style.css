@@ -6,16 +6,17 @@
 .section-heading h2 {
     font-size: 36px;
     text-transform: capitalize;
-    margin-bottom: 65px;
+    margin-top: 1%;
     display: block;
     font-family: 'Sen', sans-serif, cursive;
     letter-spacing: 3px;
-    line-height: 1.2;
+    line-height: 1.5;
+    padding: 1%;
 }
 
 .section-padding-80-50 {
     padding-top: 80px;
-    padding-bottom: 50px;
+    padding-bottom: 60px;
 }
 
 .pose-content-area {
@@ -41,7 +42,7 @@
 .pose-content-area:hover span,
 .pose-content-area:focus h5,
 .pose-content-area:focus span {
-    color: #fffff;
+    color: #fff;
 }
 
 .pose-content-area h5 {

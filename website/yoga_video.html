@@ -26,7 +26,8 @@
         <div class="container-fluid">
           <div class="navbar-header">
             <a class="navbar-brand" href="index.html">
-              <img alt="BALANCE" src="https://storage.googleapis.com/content-web/data/website%20photos/lotus.png" width="20" height="20">
+              <img alt="BALANCE" src="https://storage.googleapis.com/content-web/data/website%20photos/Logo_flower_svg.svg"
+                width="50" height="50">
             </a>
           </div>
         </div>
@@ -35,7 +36,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-lg-auto">
           <li class="nav-item">
-            <a href="#Videos" class="nav-link smoothScroll">Videos</a>
+            <a href="yoga_pose.html" class="nav-link smoothScroll">Videos</a>
           </li>
 
           <li class="nav-item">
@@ -56,30 +57,25 @@
   <!-- section 1 -->
 
   <section class="hero d-flex flex-column justify-content-center align-items-center" id="home">
-    <div class="row">
-      <h2 data-aos="fade-up" data-aos-delay="300" class="webcam-title-text">
-        Video style title
-      </h2>
-    </div>
 
+    <div id="title-container" class="row" ></div>
 
     <div class="row">
-      <video width="720" height="380" controls>
-        <source src="https://storage.googleapis.com/content-web/data/Video_by_ROMAN_ODINTSOV_from_Pexels.mp4"
-          type="video/mp4">
+      <video id="video" width="720" height="380" controls>
       </video>
     </div>
 
-
     <div class="row">
       <a href="webcam.html">
-        <h2 data-aos="fade-up" data-aos-delay="300" class="webcam-bottom-text">
+        <h2 data-aos="fade-up" data-aos-delay="200" class="webcam-bottom-text">
           It's your turn! Click Here!
         </h2>
       </a>
     </div>
 
   </section>
+
+
   <!-- section 1 ends -->
 
 
@@ -93,6 +89,29 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.js"></script>
   <script src="script.js"></script>
+  <script>
+    var id = getUrlParameter("id")
+    var videoEl = document.getElementById('video');
+    if (videoEl !== null && id !== "") {
+      var sourceEl = document.createElement('source');
+      var videoUrl = "https://storage.googleapis.com/content-web/data/" + id;
+      sourceEl.setAttribute("src", videoUrl)
+      sourceEl.setAttribute('type', 'video/mp4');
+      videoEl.appendChild(sourceEl);
+    }
+
+    var title = getUrlParameter("title")
+    var titleContainerEl = document.getElementById("title-container");
+    if (titleContainerEl !== null && title !== "") {
+      document.title = title;
+      var h2El = document.createElement("h2")
+      h2El.setAttribute("class", "webcam-title-text");
+      h2El.innerText = title;
+      titleContainerEl.appendChild(h2El);
+    }
+
+
+  </script>
 </body>
 
 </html>
