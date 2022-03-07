@@ -1,3 +1,4 @@
+import time
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -9,6 +10,15 @@ class PoseDetector:
     mpDraw = mp.solutions.drawing_utils
     mpPose = mp.solutions.pose
     pose = mpPose.Pose()
+    arrows = []
+    first_time=True
+    speech = {
+        '↓': 'down',
+        '↑': 'up',
+        '←': 'left',
+        '→': 'right',
+        'OK':''
+    }
 
     def __int__(self, side, mode=False, upBody=False, smooth=True,
                 detectionCon=0.5, trackCon=0.5):
@@ -18,6 +28,8 @@ class PoseDetector:
         self.detectionCon = detectionCon
         self.trackCon = trackCon
         self.side = side
+
+
 
     def findPose(self, img, draw=True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -79,13 +91,13 @@ class PoseDetector:
         cosine_angle = cosine_angle if -1 < cosine_angle < 1 else int(cosine_angle)
         degrees = np.arccos(cosine_angle)
         angle = int(np.degrees(degrees))
-
+        textes = []
         ### Put angle on photo
         if correct_angle_min < angle < correct_angle_max:
             angle_text = 'OK'
         else:
             angle_text = self.text(positions[A], positions[B], positions[C], correct_angle_min, angle)
-
+        textes.append(angle_text)
         color = GREEN if correct_angle_min < angle < correct_angle_max else RED
         place = (b[0], b[1] + 10) if pose else (b[0], b[1] - 10)
 
@@ -97,17 +109,24 @@ class PoseDetector:
 
         # cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
         img = np.array(img_pil)
-        return img
+        return img, textes
 
     def runDetector(self, path, side, position, live=False, scale_percent=30):
         video = 0 if live else path
         cap = cv2.VideoCapture(video)
-
+        start = time.time()
         while True:
             success, image = cap.read()
             if not success:
-                self.run_voice('end')
                 break
+            elapsed = time.time() - start
+            time_to_wait = elapsed
+            if time_to_wait > 3:
+                if not all(x is None for x in self.arrows):
+                    self.run_voice(self.arrows)
+                start = time.time()
+                self.arrows = []
+                self.first_time = True
 
             # Resize image
             width = int(image.shape[1] * scale_percent / 100)
@@ -121,18 +140,42 @@ class PoseDetector:
             if len(positions) == 0:
                 print('No pose landmarks found')
                 break
+            temps=[]
 
             for angles in position:
-                img = self.calculate_angle(img, positions, *angles)
+                img, temp = self.calculate_angle(img, positions, *angles)
+                temps.append(temp)
+
+
+            if self.first_time:
+                self.arrows = temps
+                self.first_time = False
+            else:
+                for i, temp in enumerate(temps):
+                    if self.arrows[i] != temp:
+                        self.arrows[i] = None
 
             cv2.imshow('Image', img)
             cv2.waitKey(1)
 
-    def run_voice(self, sentance):
-        synthesizer = pyttsx3.init()
-        synthesizer.say(sentance)
-        synthesizer.runAndWait()
-        synthesizer.stop()
+    def run_voice(self, lists):
+        for j, i in enumerate(lists):
+            print(i)
+            if i in [['↓'],['↑'],['←'],['→']]:
+                synthesizer = pyttsx3.init()
+                say_so = self.speech[i[0]]
+                synthesizer.say('Move your')
+                synthesizer.runAndWait()
+                number = PRINT_PARTS['l']
+                number = number[::-1]
+                print(number)
+                print(j)
+                body_name = body_part[number[j]]
+                synthesizer.say(body_name)
+                synthesizer.runAndWait()
+                synthesizer.say(say_so)
+                synthesizer.runAndWait()
+                synthesizer.stop()
 
 if __name__ == '__main__':
     position = warrior_l
