@@ -32,10 +32,46 @@ RIGHT_HEEL = 30
 LEFT_FOOT_INDEX = 31
 RIGHT_FOOT_INDEX = 32
 
+body_part = {
+0:'nose',
+1:'left eye inner',
+2:'left eye',
+3:'left eye outer',
+4:'right eye inner',
+5:'right eye',
+6:'right eye outer',
+7:'left ear',
+8:'right ear',
+9:'mouth left',
+10:'mouth right',
+11:'left shoulder',
+12:'right shoulder',
+13:'left elbow',
+14:'right elbow',
+15:'left wrist',
+16:'right wrist',
+17:'left pinky',
+18:'right pinky',
+19:'left index',
+20:'right index',
+21:'left thumb',
+22:'right thumb',
+23:'left hip',
+24:'right hip',
+25:'left knee',
+26:'right knee',
+27:'left ankle',
+28:'right ankle',
+29:'left heel',
+30:'right heel',
+31:'left foot index',
+32:'right foot index'
+}
+
 ### Colors
 RED = (0, 0, 255)
 GREEN = (0, 255, 0)
-BLUE = (255, 0, 0)
+BLUE = (255, 150, 0)
 
 ### Positions
 warrior_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 120, 180, 1),
@@ -44,19 +80,82 @@ warrior_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 120, 180, 1),
            (RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE, 30, 75, 0),
            (LEFT_SHOULDER, LEFT_ELBOW, LEFT_WRIST, 140, 180, 1),
            (LEFT_ELBOW, LEFT_SHOULDER, LEFT_HIP, 140, 180, 1),
-           (RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 140, 180, 0),
-           (RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 140, 180, 0)]
+           #(RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 140, 180, 0),
+           #(RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 140, 180, 0)
+             ]
 
-warrior_r = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 30, 75, 1),
-             (RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE,120, 180, 0),
+
+warrior3_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 120, 180, 1),
            (LEFT_SHOULDER, LEFT_HIP, LEFT_KNEE, 90, 120, 1),
            (RIGHT_SHOULDER, RIGHT_HIP, LEFT_KNEE, 90, 120, 0),
+           (RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE, 160, 180, 0),
+           (LEFT_SHOULDER, LEFT_ELBOW, LEFT_WRIST, 30, 75, 1),
+           (LEFT_ELBOW, LEFT_SHOULDER, LEFT_HIP, 0, 30, 1),
+           #(RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 0, 30, 0),
+           #(RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 30, 75, 0)
+              ]
+
+
+
+dog_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 120, 180, 1),
+           (LEFT_SHOULDER, LEFT_HIP, LEFT_KNEE, 80, 110, 1),
+           # (RIGHT_SHOULDER, RIGHT_HIP, LEFT_KNEE, 80, 110, 0),
+           # (RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE, 160, 180, 0),
            (LEFT_SHOULDER, LEFT_ELBOW, LEFT_WRIST, 140, 180, 1),
            (LEFT_ELBOW, LEFT_SHOULDER, LEFT_HIP, 140, 180, 1),
-           (RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 140, 180, 0),
-           (RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 140, 180, 0)]
+           # (RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 140, 180, 0),
+           # (RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 140, 180, 0)
+          ]
 
-PRINT_PARTS =[LEFT_SHOULDER,RIGHT_SHOULDER,LEFT_ELBOW,RIGHT_ELBOW,
-              LEFT_WRIST,RIGHT_WRIST,LEFT_HIP,RIGHT_HIP,
-              LEFT_KNEE,RIGHT_KNEE,LEFT_ANKLE,RIGHT_ANKLE]
+pillow_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 120, 180, 1),
+            (LEFT_SHOULDER, LEFT_HIP, LEFT_KNEE, 30, 75, 1),
+           # (RIGHT_SHOULDER, RIGHT_HIP, LEFT_KNEE, 30, 75, 0),
+           # (RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE, 120, 180, 0),
+         (LEFT_SHOULDER, LEFT_ELBOW, LEFT_WRIST, 70, 120, 1),
+         (LEFT_ELBOW, LEFT_SHOULDER, LEFT_HIP, 30, 100, 1),
+         # (RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 30, 100, 0),
+         # (RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 70, 120, 0)
+            ]
+
+dance_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 30,90, 1),
+           (LEFT_SHOULDER, LEFT_HIP, LEFT_KNEE, 70, 110, 1),
+            # (RIGHT_SHOULDER, RIGHT_HIP, LEFT_KNEE, 70, 110, 0),
+           (RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE, 160, 180, 0),
+           (LEFT_SHOULDER, LEFT_ELBOW, LEFT_WRIST, 30, 150, 1),
+           (LEFT_ELBOW, LEFT_SHOULDER, LEFT_HIP, 90, 150, 1),
+           # (RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 90, 150, 0),
+           # (RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 100, 150, 0)
+           ]
+
+twolegs_l = [(LEFT_HIP, LEFT_KNEE, LEFT_ANKLE, 100,140, 1),
+            (LEFT_SHOULDER, LEFT_HIP, LEFT_KNEE, 100,140, 1),
+            #(RIGHT_SHOULDER, RIGHT_HIP, LEFT_KNEE, 100,140, 0),
+            #(RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE, 100,140, 0),
+            (LEFT_SHOULDER, LEFT_ELBOW, LEFT_WRIST, 30, 100, 1),
+            (LEFT_ELBOW, LEFT_SHOULDER, LEFT_HIP, 100,160, 1),
+            #(RIGHT_ELBOW, RIGHT_SHOULDER, RIGHT_HIP, 100,160, 0),
+            #(RIGHT_SHOULDER, RIGHT_ELBOW, RIGHT_WRIST, 30, 100, 0)
+             ]
+
+PRINT_PARTS ={
+              'l':[LEFT_SHOULDER,LEFT_ELBOW,LEFT_HIP,LEFT_KNEE],
+              'r':[RIGHT_SHOULDER,RIGHT_ELBOW,RIGHT_HIP,RIGHT_KNEE]
+              }
+
+info_parts = {
+    'warrior':[LEFT_KNEE, LEFT_HIP, RIGHT_HIP, RIGHT_KNEE, LEFT_ELBOW, LEFT_SHOULDER],
+    'warrior3':[LEFT_KNEE, LEFT_HIP, RIGHT_HIP, RIGHT_KNEE, LEFT_ELBOW, LEFT_SHOULDER],
+    'dog':[LEFT_KNEE, LEFT_HIP, LEFT_ELBOW, LEFT_SHOULDER],
+    'pillow':[LEFT_KNEE, LEFT_HIP, LEFT_ELBOW, LEFT_SHOULDER],
+    'dance':[LEFT_KNEE, LEFT_HIP, RIGHT_KNEE, LEFT_ELBOW, LEFT_SHOULDER],
+    'twolegs':[LEFT_KNEE, LEFT_HIP, LEFT_ELBOW, LEFT_SHOULDER]
+}
+
+
+
+
+
+
+
+
 

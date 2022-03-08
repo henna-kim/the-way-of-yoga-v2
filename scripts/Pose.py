@@ -1,21 +1,35 @@
+import time
 import cv2
 import mediapipe as mp
 import numpy as np
 from stats import *
-
+from PIL import ImageFont, ImageDraw, Image
+import pyttsx3
 
 class PoseDetector:
     mpDraw = mp.solutions.drawing_utils
     mpPose = mp.solutions.pose
     pose = mpPose.Pose()
+    arrows = []
+    first_time=True
+    speech = {
+        '↓': 'down',
+        '↑': 'up',
+        '←': 'left',
+        '→': 'right',
+        'OK':''
+    }
 
-    def __int__(self, mode=False, upBody=False, smooth=True,
+    def __int__(self, side, mode=False, upBody=False, smooth=True,
                 detectionCon=0.5, trackCon=0.5):
         self.mode = mode
         self.upBody = upBody
         self.smooth = smooth
         self.detectionCon = detectionCon
         self.trackCon = trackCon
+        self.side = side
+
+
 
     def findPose(self, img, draw=True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -24,14 +38,41 @@ class PoseDetector:
             self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS, landmark_drawing_spec=None)
         return img
 
-    def findPosition(self, img, draw=True):
+    def text(self, A, B, C, correct_angle_min, angle):
+        ver = A[0] - C[0]
+        hor = A[1] - C[1]
+
+        if ver > hor:
+            if B[1] > A[1]:
+                # if angle < correct_angle_min:
+                    return '→'
+            else:
+                if angle < correct_angle_min:
+                    return '→'
+                else:
+                    return '←'
+
+        else:
+            if (B[0] < A[0] and angle <= 90) or (B[0] > A[0] and angle > 90):
+                if angle < correct_angle_min:
+                    return '↓'
+                else:
+                    return '↑'
+            else:
+                if angle < correct_angle_min:
+                    return '↑'
+                else:
+                    return '↓'
+
+
+    def findPosition(self, img, side, draw=True):
         pl_list = []
         if self.results.pose_landmarks:
             for id, lm in enumerate(self.results.pose_landmarks.landmark):
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 pl_list.append([id, cx, cy])
-                if draw and id in PRINT_PARTS:
+                if draw and id in PRINT_PARTS[side]:
                     cv2.circle(img, (cx, cy), 5, (255, 0, 0), cv2.FILLED)
 
         return pl_list
@@ -47,23 +88,45 @@ class PoseDetector:
         BC = c - b
 
         cosine_angle = np.dot(BA, BC) / (np.linalg.norm(BA) * np.linalg.norm(BC))
-        angle = int(np.degrees(np.arccos(cosine_angle)))
-
+        cosine_angle = cosine_angle if -1 < cosine_angle < 1 else int(cosine_angle)
+        degrees = np.arccos(cosine_angle)
+        angle = int(np.degrees(degrees))
+        textes = []
         ### Put angle on photo
-        angle_text = str(angle)
+        if correct_angle_min < angle < correct_angle_max:
+            angle_text = 'OK'
+        else:
+            angle_text = self.text(positions[A], positions[B], positions[C], correct_angle_min, angle)
+        textes.append(angle_text)
         color = GREEN if correct_angle_min < angle < correct_angle_max else RED
-        place = (b[0], b[1] + 20) if pose else (b[0], b[1] - 20)
-        cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_TRIPLEX, 0.5, color, 1)
+        place = (b[0], b[1] + 10) if pose else (b[0], b[1] - 10)
 
-        return img
+        fontpath = "./simsun.ttc"  # the font that has this "º" symbol
+        font = ImageFont.truetype(fontpath, 32)
+        img_pil = Image.fromarray(img)
+        draw = ImageDraw.Draw(img_pil)
+        draw.text(place, angle_text, font=font, fill=color)
 
-    def runDetector(self, path, position, live=False, scale_percent=30):
+        # cv2.putText(img, angle_text, place, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        img = np.array(img_pil)
+        return img, textes
+
+    def runDetector(self, path, side, position, live=False, scale_percent=30):
         video = 0 if live else path
         cap = cv2.VideoCapture(video)
-
+        start = time.time()
         while True:
             success, image = cap.read()
-            if not success: break
+            if not success:
+                break
+            elapsed = time.time() - start
+            time_to_wait = elapsed
+            if time_to_wait > 3:
+                if not all(x is None for x in self.arrows):
+                    self.run_voice(self.arrows)
+                start = time.time()
+                self.arrows = []
+                self.first_time = True
 
             # Resize image
             width = int(image.shape[1] * scale_percent / 100)
@@ -72,20 +135,51 @@ class PoseDetector:
             img = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
 
             img = self.findPose(img)
-            positions = self.findPosition(img)
+            positions = self.findPosition(img, side)
 
             if len(positions) == 0:
                 print('No pose landmarks found')
                 break
+            temps=[]
 
             for angles in position:
-                img = self.calculate_angle(img, positions, *angles)
+                img, temp = self.calculate_angle(img, positions, *angles)
+                temps.append(temp)
+
+
+            if self.first_time:
+                self.arrows = temps
+                self.first_time = False
+            else:
+                for i, temp in enumerate(temps):
+                    if self.arrows[i] != temp:
+                        self.arrows[i] = None
 
             cv2.imshow('Image', img)
             cv2.waitKey(1)
 
+    def run_voice(self, lists):
+        print(info_parts['warrior'])
+        print(lists)
+        for j, i in enumerate(lists):
+            if i in [['↓'],['↑'],['←'],['→']]:
+                synthesizer = pyttsx3.init()
+                say_so = self.speech[i[0]]
+                synthesizer.say('Move your')
+                synthesizer.runAndWait()
+                number = info_parts['warrior']
+                print(number)
+                print(j)
+                body_name = body_part[number[j]]
+                synthesizer.say(body_name)
+                synthesizer.runAndWait()
+                synthesizer.say(say_so)
+                synthesizer.runAndWait()
+                synthesizer.stop()
 
 if __name__ == '__main__':
-    path = '../videos/warrior1.mp4'
-    detector = PoseDetector()
-    detector.runDetector(path, warrior_l, scale_percent=50)
+    position = warrior3_l
+    path = '../videos/warrior3_l.mp4'
+    side = path[-5]
+    while True:
+        PoseDetector().runDetector(path, side, position, scale_percent=50)

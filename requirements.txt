@@ -39,3 +39,5 @@ tensorflow
 numpy
 matplotlib
 mediapipe
+pyttsx3
+pillow
