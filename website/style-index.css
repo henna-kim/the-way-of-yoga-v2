@@ -240,8 +240,7 @@ strong {
 #title-container-text2 {
   font-size: 36px;
   text-transform: capitalize;
-  /* margin-top: 20px; */
-  padding-top: 3%;
+  margin-top: 8%;
   padding-bottom: 3%;
   display: block;
   font-family: 'Sen', sans-serif, cursive;
@@ -253,7 +252,7 @@ strong {
   font-size: 36px;
   text-transform: capitalize;
   /* margin-top: 20px; */
-  padding-top: 10%;
+  padding-top: 8%;
   padding-bottom: 3%;
   display: block;
   font-family: 'Sen', sans-serif, cursive;
