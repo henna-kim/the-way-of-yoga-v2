@@ -26,8 +26,7 @@
         <div class="container-fluid">
           <div class="navbar-header">
             <a class="navbar-brand" href="index.html">
-              <img alt="BALANCE" src="https://storage.googleapis.com/content-web/data/website%20photos/Logo_flower_svg.svg"
-                width="50" height="50">
+              <img alt="BALANCE" src="https://storage.googleapis.com/content-web/data/website%20photos/Logo_flower_svg.svg" width="50" height="50">
             </a>
           </div>
         </div>
@@ -54,36 +53,16 @@
   <!-- navbar ends -->
 
 
-  <!-- section 1 -->
-
+  <!-- camera section -->
   <section class="hero d-flex flex-column justify-content-center align-items-center" id="home">
-    <div class="bg-overlay">
-      <video autoplay muted loop id="myVideo">
-        <source src="https://storage.googleapis.com/content-web/data/Video_by_Taryn_Elliott_from_Pexels.mp4"
-          type="video/mp4">
-      </video>
+    <div id="title-container" class="row">
+      <h2 id="title-container-text2">Start Yoga!</h2>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto col-12">
-          <div class="hero-text mt-5 text-center">
-            <a href="yoga_pose.html">
-              <h2 class="hero-text-container" data-aos="fade-up" data-aos-delay="300"
-                style="font-family: 'Sen', sans-serif; font-weight: 600; letter-spacing: 2px;">
-                Welcome to your inner voice
-              </h2>
-              <img src="file:///Users/raghda/Downloads/Balance%20(1)/2.svg" class="fix"
-                width="230" height="230" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <video id="webcam" autoplay playsinline width="640" height="480"></video>
+    <canvas id="canvas" class="d-none"></canvas>
   </section>
-  <!-- section 1 ends -->
-
+  <!-- camera section ends-->
 
   <!-- scripts -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -94,7 +73,21 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.js"></script>
-  <script src="script.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+  <script>
+    const webcamElement = document.getElementById('webcam');
+    const canvasElement = document.getElementById('canvas');
+    const webcam = new Webcam(webcamElement, 'user', canvasElement);
+    webcam.start()
+      .then(result => {
+        console.log("webcam started");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+  </script>
+
 </body>
 
 </html>

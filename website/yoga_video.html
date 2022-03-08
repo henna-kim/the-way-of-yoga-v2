@@ -57,31 +57,25 @@
   <!-- section 1 -->
 
   <section class="hero d-flex flex-column justify-content-center align-items-center" id="home">
-    <div class="bg-overlay">
-      <video autoplay muted loop id="myVideo">
-        <source src="https://storage.googleapis.com/content-web/data/Video_by_Taryn_Elliott_from_Pexels.mp4"
-          type="video/mp4">
+
+    <div id="title-container" class="row" ></div>
+
+    <div class="row">
+      <video id="video" width="720" height="380" controls>
       </video>
     </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto col-12">
-          <div class="hero-text mt-5 text-center">
-            <a href="yoga_pose.html">
-              <h2 class="hero-text-container" data-aos="fade-up" data-aos-delay="300"
-                style="font-family: 'Sen', sans-serif; font-weight: 600; letter-spacing: 2px;">
-                Welcome to your inner voice
-              </h2>
-              <img src="file:///Users/raghda/Downloads/Balance%20(1)/2.svg" class="fix"
-                width="230" height="230" />
-            </a>
-          </div>
-        </div>
-      </div>
+    <div class="row">
+      <a href="webcam.html">
+        <h2 data-aos="fade-up" data-aos-delay="200" class="webcam-bottom-text">
+          It's your turn! Click Here!
+        </h2>
+      </a>
     </div>
 
   </section>
+
+
   <!-- section 1 ends -->
 
 
@@ -95,6 +89,29 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.js"></script>
   <script src="script.js"></script>
+  <script>
+    var id = getUrlParameter("id")
+    var videoEl = document.getElementById('video');
+    if (videoEl !== null && id !== "") {
+      var sourceEl = document.createElement('source');
+      var videoUrl = "https://storage.googleapis.com/content-web/data/" + id;
+      sourceEl.setAttribute("src", videoUrl)
+      sourceEl.setAttribute('type', 'video/mp4');
+      videoEl.appendChild(sourceEl);
+    }
+
+    var title = getUrlParameter("title")
+    var titleContainerEl = document.getElementById("title-container");
+    if (titleContainerEl !== null && title !== "") {
+      document.title = title;
+      var h2El = document.createElement("h2")
+      h2El.setAttribute("class", "webcam-title-text");
+      h2El.innerText = title;
+      titleContainerEl.appendChild(h2El);
+    }
+
+
+  </script>
 </body>
 
 </html>
