@@ -2,7 +2,7 @@ import time
 import cv2
 import mediapipe as mp
 import numpy as np
-from stats import *
+from pose.stats import *
 from PIL import ImageFont, ImageDraw, Image
 import pyttsx3
 
@@ -109,7 +109,7 @@ class PoseDetector:
         img = np.array(img_pil)
         return img, textes
 
-    def runDetector(self, path, position, live=False, scale_percent=30):
+    def runDetector(self, position, path=None, live=True, scale_percent=30):
         video = 0 if live else path
         cap = cv2.VideoCapture(video)
         start = time.time()
@@ -178,4 +178,4 @@ if __name__ == '__main__':
     position = warrior3
     path = '../videos/warrior3.mp4'
     while True:
-        PoseDetector().runDetector(path, position, scale_percent=50)
+        PoseDetector().runDetector(position)
