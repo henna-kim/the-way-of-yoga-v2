@@ -159,15 +159,15 @@ class PoseDetector:
             cv2.waitKey(1)
 
     def run_voice(self, lists):
+        print(info_parts['warrior'])
+        print(lists)
         for j, i in enumerate(lists):
-            print(i)
             if i in [['↓'],['↑'],['←'],['→']]:
                 synthesizer = pyttsx3.init()
                 say_so = self.speech[i[0]]
                 synthesizer.say('Move your')
                 synthesizer.runAndWait()
-                number = PRINT_PARTS['l']
-                number = number[::-1]
+                number = info_parts['warrior']
                 print(number)
                 print(j)
                 body_name = body_part[number[j]]
@@ -178,8 +178,8 @@ class PoseDetector:
                 synthesizer.stop()
 
 if __name__ == '__main__':
-    position = warrior_l
-    path = '../videos/warrior_l.mp4'
+    position = warrior3_l
+    path = '../videos/warrior3_l.mp4'
     side = path[-5]
     while True:
         PoseDetector().runDetector(path, side, position, scale_percent=50)
