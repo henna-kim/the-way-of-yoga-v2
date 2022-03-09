@@ -61,7 +61,7 @@
     border-radius: 50%;
     width: 100%;
     width: 150px;
-    height: 200px;
+    height: 150px;
     transition-duration: 500ms;
 }
 
@@ -95,5 +95,5 @@
   } */
 
 .img-fluid {
-    height: 100%;
+    height: 75%;
  }
