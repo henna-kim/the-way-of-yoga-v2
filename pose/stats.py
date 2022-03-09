@@ -148,11 +148,11 @@ info_parts = {
     'twolegs':[LEFT_KNEE, LEFT_HIP, LEFT_ELBOW, LEFT_SHOULDER]
 }
 
-
-
-
-
-
-
-
-
+positions_id = {
+    'warrior':warrior,
+    'warrior3':warrior3,
+    'dog':dog,
+    'pillow':pillow,
+    'dance':dance,
+    'twolegs':twolegs
+}
