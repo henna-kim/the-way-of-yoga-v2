@@ -37,6 +37,7 @@ def index():
 def yoga_pose():
    global check
    check = False
+
    # return the rendered template
    return render_template("yoga_pose.html")
 
@@ -45,8 +46,8 @@ def yoga_video():
    global check
    check = False
    id = request.args.get('id')
-   global position
-   position = positions_id[id]
+#  global position
+#  position = positions_id[id]
    # return the rendered template
    return render_template("yoga_video.html")
 
@@ -125,9 +126,12 @@ def generate():
 
 @app.route("/video_feed")
 def video_feed():
+    global check
+    check = True
+
    # return the response generated along with the specific media
    # type (mime type)
-   return Response(generate(),
+    return Response(generate(),
       mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 # check to see if this is the main thread of execution
