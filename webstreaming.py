@@ -46,9 +46,9 @@ def yoga_video():
    global check
    check = False
    id = request.args.get('id')
-#  global position
-#  position = positions_id[id]
-   # return the rendered template
+   global position
+   position = positions_id[id]
+   print(position)
    return render_template("yoga_video.html")
 
 @app.route("/webcam")
@@ -62,18 +62,19 @@ def detect_motion(frameCount):
    # grab global references to the video stream, output frame, and
    # lock variables
    global vs, outputFrame, lock
-
+   start = time.time()
    while True:
       # read the next frame from the video stream, resize it,
       # convert the frame to grayscale, and blur it
       frame = vs.read()
       frame = imutils.resize(frame, width=640)
-      start = time.time()
+
       if check:
          elapsed = time.time() - start
          checking = elapsed
+         print(checking)
 
-         if checking > 10:
+         if checking > 3:
             if not all(x is None for x in detect.arrows):
                detect.run_voice(detect.arrows)
             start = time.time()
@@ -126,12 +127,11 @@ def generate():
 
 @app.route("/video_feed")
 def video_feed():
-    global check
-    check = True
-
+   global check
+   check = True
    # return the response generated along with the specific media
    # type (mime type)
-    return Response(generate(),
+   return Response(generate(),
       mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 # check to see if this is the main thread of execution

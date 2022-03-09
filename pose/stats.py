@@ -149,10 +149,10 @@ info_parts = {
 }
 
 positions_id = {
-    'warrior':warrior,
-    'warrior3':warrior3,
-    'dog':dog,
-    'pillow':pillow,
-    'dance':dance,
-    'twolegs':twolegs
+    'warrior I.mp4':warrior,
+    'warrior III.mp4':warrior3,
+    'downward-dog.mp4':dog,
+    'warrior II.mp4':pillow,
+    'wheel pose.mp4':dance,
+    'bridge.mp4':twolegs
 }
