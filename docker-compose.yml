@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  thewayofyogav2:
+    image: thewayofyogav2
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
