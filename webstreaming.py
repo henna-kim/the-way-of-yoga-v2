@@ -79,10 +79,12 @@ def detect_motion(frameCount):
       frame = vs.read()
       frame = imutils.resize(frame, width=640)
       global elapsed
+      if not check:
+         start = time.time()
       if check:
          elapsed = time.time() - start
          checking = elapsed
-         print(elapsed)
+         # print(elapsed)
          if checking > 10:
             if not all(x is None for x in detect.arrows):
                for i, move in enumerate(detect.arrows):
@@ -99,6 +101,7 @@ def detect_motion(frameCount):
                      synthesizer.say(detect.speech[move[0]])
                      synthesizer.runAndWait()
                      synthesizer.stop()
+            start = time.time()
             detect.arrows = []
 
             detect.first_time = True
