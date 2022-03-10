@@ -10,6 +10,8 @@ import argparse
 import imutils
 import time
 import cv2
+import pyttsx3
+id = 'warrior I.mp4'
 position = warrior
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful when multiple browsers/tabs
@@ -26,18 +28,22 @@ app = Flask(__name__,
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
 check = False
-
+start = 0
+elapsed =0
 @app.route("/")
 def index():
    global check
    check = False
+   global start
+   start = time.time()
    # return the rendered template
    return render_template("index.html")
 @app.route("/yoga_pose")
 def yoga_pose():
    global check
    check = False
-
+   global start
+   start = time.time()
    # return the rendered template
    return render_template("yoga_pose.html")
 
@@ -45,6 +51,9 @@ def yoga_pose():
 def yoga_video():
    global check
    check = False
+   global start
+   start = time.time()
+   global id
    id = request.args.get('id')
    global position
    position = positions_id[id]
@@ -62,45 +71,54 @@ def detect_motion(frameCount):
    # grab global references to the video stream, output frame, and
    # lock variables
    global vs, outputFrame, lock
+   global start
    start = time.time()
    while True:
       # read the next frame from the video stream, resize it,
       # convert the frame to grayscale, and blur it
       frame = vs.read()
       frame = imutils.resize(frame, width=640)
-
+      global elapsed
       if check:
          elapsed = time.time() - start
          checking = elapsed
-         print(checking)
-
-         if checking > 3:
+         print(elapsed)
+         if checking > 10:
             if not all(x is None for x in detect.arrows):
-               detect.run_voice(detect.arrows)
-            start = time.time()
+               for i, move in enumerate(detect.arrows):
+                  if move in [['↓'], ['↑'], ['←'], ['→']]:
+                     synthesizer = pyttsx3.init()
+                     synthesizer.say('Move your')
+                     synthesizer.runAndWait()
+                     synthesizer.stop()
+                     number = info_parts[id][i]
+                     body_name = body_part[number]
+                     synthesizer.say(body_name)
+                     synthesizer.runAndWait()
+                     synthesizer.stop()
+                     synthesizer.say(detect.speech[move[0]])
+                     synthesizer.runAndWait()
+                     synthesizer.stop()
             detect.arrows = []
+
             detect.first_time = True
-
-
+         elapsed = 0
          frame = detect.findPose(frame)
          positions = detect.findPosition(frame)
 
-         if len(positions) == 0:
-            print('No pose landmarks found')
-            break
+         if len(positions) != 0:
+            temps = []
+            for angles in position:
+               frame, temp = detect.calculate_angle(frame, positions, *angles)
+               temps.append(temp)
 
-         temps = []
-         for angles in position:
-            frame, temp = detect.calculate_angle(frame, positions, *angles)
-            temps.append(temp)
-
-         if detect.first_time:
-            detect.arrows = temps
-            detect.first_time = False
-         else:
-            for i, temp in enumerate(temps):
-               if detect.arrows[i] != temp:
-                  detect.arrows[i] = None
+            if detect.first_time:
+               detect.arrows = temps
+               detect.first_time = False
+            else:
+               for i, temp in enumerate(temps):
+                  if detect.arrows[i] != temp:
+                     detect.arrows[i] = None
 
       with lock:
          outputFrame = frame.copy()
