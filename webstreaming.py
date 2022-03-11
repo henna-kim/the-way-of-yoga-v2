@@ -77,7 +77,7 @@ def detect_motion(frameCount):
       # read the next frame from the video stream, resize it,
       # convert the frame to grayscale, and blur it
       frame = vs.read()
-      frame = imutils.resize(frame, width=640)
+      frame = imutils.resize(frame, width=1280)
       global elapsed
       if not check:
          start = time.time()
@@ -85,26 +85,27 @@ def detect_motion(frameCount):
          elapsed = time.time() - start
          checking = elapsed
          # print(elapsed)
-         if checking > 10:
-            if not all(x is None for x in detect.arrows):
-               for i, move in enumerate(detect.arrows):
-                  if move in [['↓'], ['↑'], ['←'], ['→']]:
-                     synthesizer = pyttsx3.init()
-                     synthesizer.say('Move your')
-                     synthesizer.runAndWait()
-                     synthesizer.stop()
-                     number = info_parts[id][i]
-                     body_name = body_part[number]
-                     synthesizer.say(body_name)
-                     synthesizer.runAndWait()
-                     synthesizer.stop()
-                     synthesizer.say(detect.speech[move[0]])
-                     synthesizer.runAndWait()
-                     synthesizer.stop()
-            start = time.time()
-            detect.arrows = []
-
-            detect.first_time = True
+         # if checking > 10:
+         #    if not all(x is None for x in detect.arrows):
+         #       for i, move in enumerate(detect.arrows):
+         #          if move in [['↓'], ['↑'], ['←'], ['→']]:
+         #             synthesizer = pyttsx3.init()
+         #             synthesizer.say('Move your')
+         #             synthesizer.runAndWait()
+         #             synthesizer.stop()
+         #             number = info_parts[id][i]
+         #             body_name = body_part[number]
+         #             synthesizer.say(body_name)
+         #             synthesizer.runAndWait()
+         #             synthesizer.stop()
+         #             synthesizer.say(detect.speech[move[0]])
+         #             synthesizer.runAndWait()
+         #             synthesizer.stop()
+         #    start = time.time()
+         #    detect.arrows = []
+         # time_text = str(int(elapsed))
+         # cv2.putText(frame, time_text, (80, 50), cv2.FONT_HERSHEY_DUPLEX, 2, RED, 1)
+            # detect.first_time = True
          elapsed = 0
          frame = detect.findPose(frame)
          positions = detect.findPosition(frame)
@@ -122,6 +123,7 @@ def detect_motion(frameCount):
                for i, temp in enumerate(temps):
                   if detect.arrows[i] != temp:
                      detect.arrows[i] = None
+
 
       with lock:
          outputFrame = frame.copy()
