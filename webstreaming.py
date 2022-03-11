@@ -175,7 +175,7 @@ if __name__ == '__main__':
    t.daemon = True
    t.start()
    # start the flask app
-   app.run(host=args["ip"], port=args["port"], debug=True,
+   app.run(host='0.0.0.0', port=8000, debug=True,
       threaded=True, use_reloader=False)
 # release the video stream pointer
 vs.stop()
