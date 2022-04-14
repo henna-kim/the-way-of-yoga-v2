@@ -42,3 +42,7 @@ matplotlib
 mediapipe
 pyttsx3
 pillow
+opencv-python
+
+#other
+flask
