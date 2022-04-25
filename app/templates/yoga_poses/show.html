@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+  <section class="hero d-flex flex-column justify-content-center align-items-center" id="home">
+
+    <div id="title-container" class="row" >{{pose['name']}}</div>
+
+    <div class="row">
+      <video id="video" width="720" height="380" controls src="{{ url_for('static', path=pose['video']) }}">
+      </video>
+    </div>
+
+    <div class="row">
+      <a href="/yoga_poses/{{pose['id']}}/perform">
+        <h2 data-aos="fade-up" data-aos-delay="200" class="webcam-bottom-text">
+          It's your turn! Click Here!
+        </h2>
+      </a>
+    </div>
+  </section>
+{% endblock %}
