@@ -1,0 +1,38 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+  
+  <!-- section: 6 pose videos -->
+  <section class="pose-videos section-padding-80-50" id="pose-videos">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="section-heading text-center wow fadeInUp" data-aos="fade-up" data-aos-delay="200">
+            <h2>Which pose shall we start?</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      {% for group_poses in poses %}
+        <div class="row justify-content-md-center">
+          {% for pose in group_poses %}
+            <div class="col col-lg-3">
+              <a href="/yoga_poses/{{ pose['id'] }}">
+                <div class="text-center mb-30 wow fadeInUp" data-aos="fade-up" data-aos-delay="200">
+                  <div class="video-thumb">
+                    <img
+                      src="{{ url_for('static', path=pose['img']) }}"
+                      alt="" class="img-fluid">
+                  </div>
+                  <h6>{{ pose['name'] }}</h6>
+                  <span>{{ pose['level'] }}</span>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+        <br />   
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

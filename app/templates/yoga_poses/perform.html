@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+{% block head %}
+    {{ super() }}
+    <style>
+        button {
+            padding: 8px 16px;
+        }
+
+        pre {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        video {
+            width: 100%;
+        }
+
+        .option {
+            margin-bottom: 8px;
+        }
+
+        #media {
+            max-width: 1280px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="pose-videos section-padding-80-50" id="pose-videos">
+        <div class="option">
+            <label for="use-video">Use video</label>
+            <select id="video-transform">
+                <option value="none" selected>No transform</option>
+                <option value="edges">Edge detection</option>
+                <option value="cartoon">Cartoon effect</option>
+                <option value="rotate">Rotate</option>
+            </select>
+        </div>
+        
+        <button id="start" onclick="start()">Start</button>
+        <button id="stop" style="display: none" onclick="stop()">Stop</button>
+        
+        <div id="media" style="display: none">
+            <h2>Media</h2>
+            <video id="video" autoplay="true" playsinline="true"></video>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='/javascript/client.js') }}"></script>
+{% endblock %}

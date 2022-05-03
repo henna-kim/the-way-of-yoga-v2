@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+  <!-- section 1 -->
+  <section class="hero d-flex flex-column justify-content-center align-items-center" id="home">
+    <div class="bg-overlay">
+      <video autoplay muted loop id="myVideo">
+        <source src="{{ url_for('static', path='/videos/pexels.mp4') }}"
+          type="video/mp4">
+      </video>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto col-12">
+          <div class="hero-text mt-5 text-center">
+            <a href="/yoga_poses">
+              <h2 class="hero-text-container" data-aos="fade-up" data-aos-delay="300"
+                style="font-family: 'Sen', sans-serif; font-weight: 600; letter-spacing: 2px;">
+                Welcome to your inner voice
+              </h2>
+              <img src="{{ url_for('static', path='/images/balance.png') }}" class="fix"
+                width="230" height="230" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- section 1 ends -->
+{% endblock %}
